@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="container" class="flex flex-wrap w-100vw ml-32 mt-10"></div>
+<script>
+        const container = document.getElementById('container');
+
+        fetch('https://fakestoreapi.com/products')
+            .then(response => response.json())  // Parse JSON response
+            .then(products => {
+                products.forEach(product => {
+                    // Create a new div element for each product
+                    const productDiv = document.createElement('div');
+                    productDiv.classList.add('product', 'border', 'p-4', 'mb-4','mr-4', 'rounded', 'shadow' ,'w-48','h-68');
+
+                    // Add product image
+                    const productImage = document.createElement('img');
+                    productImage.src = product.image;
+                    productImage.alt = product.title;
+                    productImage.classList.add('w-32', 'h-32', 'object-contain', 'mb-2');
+                    productDiv.appendChild(productImage);
+
+                    // Add product title
+                    const productTitle = document.createElement('h6');
+                    productTitle.textContent = product.title;
+                    productTitle.classList.add('font-bold', 'text-lg', 'mb-2');
+                    productDiv.appendChild(productTitle);
+
+                    // Add product price
+                    const productPrice = document.createElement('p');
+                    productPrice.textContent = `$${product.price}`;
+                    productPrice.classList.add('text-green-600', 'text-md', 'font-semibold');
+                    productDiv.appendChild(productPrice);
+
+                    // Append the product div to the container
+                    container.appendChild(productDiv);
+                });
+            })
+            .catch(error => console.error('Error fetching products:', error));
+</script>
+</body>
+
+</html>
