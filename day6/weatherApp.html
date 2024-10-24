@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather-Application</title>
+    <link rel="stylesheet" href="weatherApp.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Weather Report</h1>
+        <input id="location" placeholder="Enter Location" />
+        <button onclick="weatherFetch()">Get Weather Details</button>
+
+        <div id="weatherInfo"></div>
+    </div>
+
+    <script>
+        function weatherFetch() {
+            const inputLocation = document.getElementById('location').value;
+            const apiKey = '46f478ba10f78ed5c00bc0c0e8f597a4'; 
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${inputLocation}&appid=${apiKey}&units=metric`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); 
+
+                    
+                    const weatherDiv = document.getElementById('weatherInfo');
+                    weatherDiv.innerHTML = '';  
+
+                    const cityName = document.createElement('h2');
+                    cityName.textContent = `Weather in ${data.name}, ${data.sys.country}`;
+                    weatherDiv.appendChild(cityName);
+
+                    const temperature = document.createElement('p');
+                    temperature.textContent = `Temperature: ${data.main.temp}°C`;
+                    weatherDiv.appendChild(temperature);
+
+                    const feelsLike = document.createElement('p');
+                    feelsLike.textContent = `Feels like: ${data.main.feels_like}°C`;
+                    weatherDiv.appendChild(feelsLike);
+
+                    const weatherDesc = document.createElement('p');
+                    weatherDesc.textContent = `Weather: ${data.weather[0].description}`;
+                    weatherDiv.appendChild(weatherDesc);
+
+                    const humidity = document.createElement('p');
+                    humidity.textContent = `Humidity: ${data.main.humidity}%`;
+                    weatherDiv.appendChild(humidity);
+
+                    const windSpeed = document.createElement('p');
+                    windSpeed.textContent = `Wind Speed: ${data.wind.speed} m/s`;
+                    weatherDiv.appendChild(windSpeed);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
